@@ -1,0 +1,472 @@
+/*
+  Force full width & height.
+
+  If this block is removed, the layout height/length will be determined by
+  the amount of content in the page. That might result in a page which has
+  a footer only a few inches from the top of the viewport, or one which
+  scrolls beyond the viewport.
+
+  This forces the layout to always be full screen regardless of how much,
+  or how little, content is in place. Neither is "right" or "wrong", there
+  are valid cases for each. I just want to be clear what's controlling the
+  page/viewport height.
+*/
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body, .viewport {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  color : #5f6363;
+  font-family: Arial;
+}
+/* encapsulate the various syntax in helper clases */
+/* inspired by http://infrequently.org/2009/08/css-3-progress/ */
+
+/* items flex/expand vertically */
+.vbox {
+  /* previous syntax */
+  display: -webkit-box;
+  display:    -moz-box;
+  display:         box;
+
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -ms-box-orient: vertical;
+  box-orient: vertical;
+
+  /* current syntax */
+  display: -webkit-flex;
+  display:    -moz-flex;
+  display:     -ms-flex;
+  display:         flex;
+
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+/* items flex/expand horizontally */
+.hbox {
+  /* previous syntax */
+  display: -webkit-box;
+  display:    -moz-box;
+  display:     -ms-box;
+  display:         box;
+
+  -webkit-box-orient: horizontal;
+  -moz-box-orient: horizontal;
+  -ms-box-orient: horizontal;
+  box-orient: horizontal;
+
+  /* current syntax */
+  display: -webkit-flex;
+  display:    -moz-flex;
+  display:     -ms-flex;
+  display:         flex;
+
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.space-between {
+  /* previous syntax */
+  -webkit-box-pack: justify;
+  -moz-box-pack: justify;
+  -ms-box-pack: justify;
+  box-pack: justify;
+
+  /* current syntax */
+  -webkit-justify-content: space-between;
+  -moz-justify-content: space-between;
+  -ms-justify-content: space-between;
+  justify-content: space-between;
+}
+
+/* I went with a fixed height header & footer because it's a common case.
+  This could easily be altered to flex proportionally with the page.
+*/
+header {
+  background-color: rgb(55,124,190);
+  height: 70px;
+  color: white;
+  align-items: center;
+}
+
+.main {
+  /* previous syntax */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -ms-box-flex: 1;
+  box-flex: 1;
+
+  /* current syntax */
+  -webkit-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+article {
+  /* previous syntax */
+  -webkit-box-flex: 5;
+  -moz-box-flex: 5;
+  -ms-box-flex: 5;
+  box-flex: 5;
+
+  /* current syntax */
+  -webkit-flex: 5;
+  -moz-flex: 5;
+  -ms-flex: 5;
+  flex: 5;
+}
+
+aside, nav {
+  /* previous syntax */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -ms-box-flex: 1;
+  box-flex: 1;
+
+  /* current syntax */
+  -webkit-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+
+footer {
+  height: 70px;
+  background-color: #377cbf;
+  color: white;
+  min-width: 100%;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+
+
+#root{
+  height: 100%;
+  width: 100%;
+}
+
+.logo {
+  height: 1.5rem;
+}
+
+.App {
+  text-align: center;
+}
+
+.App-title {
+  font-size: 28px;
+  font-weight: normal;
+  padding: 10px 0px;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+h1 {
+  text-align:center;
+}
+
+hr {
+  border: 0;
+  height: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid #8a8d8f;
+}
+p{
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+label > div {
+  margin-bottom:5px;
+}
+
+.item div > a {
+  color : #2670b8;
+  text-decoration: none;
+  font-weight:bold;
+}
+
+
+
+.item div.value {
+  font-weight:bold;
+}
+
+.item .forked {
+  background-color: #2670b8;
+  padding: 3px;
+  color: white;
+  text-align:center;
+  width: 80px;
+  position: absolute;
+  top:10px;
+  right:10px;
+}
+
+ul.pagination {
+  padding: 30px 0px 80px 0px;
+  margin: 0;
+  display:flex;
+  list-style: none;
+}
+
+li.page-item.active > a.page-link{
+  background-color: #2670b8;
+  color: white;
+}
+
+ul.pagination a.page-link {
+  padding: 20px 15px;
+  border: 1px solid gray;
+  box-sizing: border-box;
+  text-decoration: none;
+  color: #424646;
+  font-size: 11px
+}
+
+@media only screen and (max-width: 768px) {
+  .form-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-container > .item {
+    margin: 10px 0px;
+    max-width: 100%;
+    flex: 1;
+  }
+
+  .bridge {
+    width: 100%;
+    text-align:center;
+    margin-bottom: 50px;
+    margin-top: 25px;
+  }
+
+  .result-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px
+  }
+
+  .result-container > .item {
+    border:1px solid #8a8d8f;
+    padding:15px;
+    position: relative;
+  }
+
+  .result-container > .item:nth-child(2) {
+    border-top: none;
+    border-bottom: none;
+  }
+
+  .result-container > .item:nth-child(2) div,  .result-container > .item:nth-child(3) div {
+    float:left;
+  }
+
+  .result-container > .item:nth-child(2) div:last-child,  .result-container > .item:nth-child(3) div:last-child{
+    margin-left: 10px;
+  }
+
+  .result-container > .item:first-child > div:first-child {
+    margin-bottom: 15px;
+  }
+
+  ul.pagination a.page-link {
+    padding: 20px 15px;
+  }
+
+  footer {
+    font-size: 10px;
+  }
+}
+
+@media only screen and (min-width: 769px) {
+  .form-container {
+    display: grid;
+    grid-template-columns: 325px 325px;
+    grid-column-gap: 140px;
+    grid-row-gap: 20px;
+    justify-content: center;
+  }
+
+  .item {
+  }
+
+  .bridge {
+    width: 100%;
+    text-align:center;
+    grid-column-end: span 2;
+    margin: 50px 0;
+  }
+
+  .result-container {
+    display: grid;
+    grid-template-columns: auto 145px 145px;
+
+  }
+
+  .result-container > .item {
+    border:1px solid #8a8d8f;
+    margin-bottom: 16px;
+    padding:15px;
+    position: relative;
+  }
+
+  .result-container > .item:nth-child(2) {
+    border-left: none;
+    border-right: none;
+    text-align: center;
+  }
+
+  .result-container > .item:nth-child(3) {
+    text-align: center;
+  }
+
+  .result-container > .item > div:first-child {
+    margin-bottom: 15px;
+  }
+
+  ul.pagination a.page-link {
+    padding: 20px;
+  }
+}
+
+
+/* Absolute Center Spinner */
+.loading {
+  position: fixed;
+  z-index: 999;
+  height: 2em;
+  width: 2em;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+/* Transparent Overlay */
+.loading:before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.3);
+}
+
+/* :not(:required) hides these rules from IE9 and below */
+.loading:not(:required) {
+  /* hide "loading..." text */
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+
+.loading:not(:required):after {
+  content: '';
+  display: block;
+  font-size: 10px;
+  width: 1em;
+  height: 1em;
+  margin-top: -0.5em;
+  -webkit-animation: spinner 1500ms infinite linear;
+  -moz-animation: spinner 1500ms infinite linear;
+  -ms-animation: spinner 1500ms infinite linear;
+  -o-animation: spinner 1500ms infinite linear;
+  animation: spinner 1500ms infinite linear;
+  border-radius: 0.5em;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.5) -1.5em 0 0 0, rgba(0, 0, 0, 0.5) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+  box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+}
+
+/* Animation */
+
+@-webkit-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-moz-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
