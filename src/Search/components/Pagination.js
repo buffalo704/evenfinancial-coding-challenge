@@ -1,10 +1,9 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import * as actions from "../../actions/index";
 
 export class Pagination extends Component {
-  loadData({ totalRecords = null, pageLimit = 30, pageNeighbors = 0 }) {
+  loadData({ totalRecords = null, pageLimit = 30, pageNeighbors = 0, currentPage }) {
+    this.currentPage = currentPage;
     this.pageLimit = typeof pageLimit === "number" ? pageLimit : 30;
     this.totalRecords = typeof totalRecords === "number" ? totalRecords : 0;
     this.pageNeighbors =
@@ -16,8 +15,8 @@ export class Pagination extends Component {
 
     this.LEFT_PAGE = "LEFT";
     this.RIGHT_PAGE = "RIGHT";
-      this.DECREMENT_PAGE = "DECREMENT";
-      this.INCREMENT_PAGE = "INCREMENT";
+    this.DECREMENT_PAGE = "DECREMENT";
+    this.INCREMENT_PAGE = "INCREMENT";
   }
 
   range = (from, to, step = 1) => {
@@ -34,9 +33,8 @@ export class Pagination extends Component {
 
   fetchPageNumbers = () => {
     const totalPages = this.totalPages;
-    const currentPage = this.props.app.paginationInfo.currentPage;
     const pageNeighbors = this.pageNeighbors;
-
+    const currentPage = this.currentPage;
     const totalNumbers = this.pageNeighbors * 2 + 3;
     const totalBlocks = totalNumbers + 2;
 
@@ -66,12 +64,12 @@ export class Pagination extends Component {
       }
 
       return [
-            this.DECREMENT_PAGE,
-            1,
-            ...pages,
-            totalPages,
-            this.INCREMENT_PAGE
-        ];
+        this.DECREMENT_PAGE,
+        1,
+        ...pages,
+        totalPages,
+        this.INCREMENT_PAGE
+      ];
     }
 
     return this.range(1, totalPages);
@@ -88,7 +86,7 @@ export class Pagination extends Component {
       totalRecords: this.totalRecords
     };
 
-      onPageChanged(paginationData);
+    onPageChanged(paginationData);
   };
 
   handleClick = page => evt => {
@@ -98,28 +96,31 @@ export class Pagination extends Component {
 
   handleMoveLeft = evt => {
     evt.preventDefault();
-    this.gotoPage(this.props.app.paginationInfo.currentPage - this.pageNeighbors * 2 - 1);
+    this.gotoPage(
+      this.currentPage - this.pageNeighbors * 2 - 1
+    );
   };
 
   handleMoveRight = evt => {
     evt.preventDefault();
-    this.gotoPage(this.props.app.paginationInfo.currentPage + this.pageNeighbors * 2 + 1);
+    this.gotoPage(
+        this.currentPage + this.pageNeighbors * 2 + 1
+    );
   };
 
-    handleDecrementLeft = evt => {
-        evt.preventDefault();
-        this.gotoPage(--this.props.app.paginationInfo.currentPage);
-    };
+  handleDecrementLeft = evt => {
+    evt.preventDefault();
+    this.gotoPage(--this.currentPage);
+  };
 
-    handleIncrementRight = evt => {
-        evt.preventDefault();
-        this.gotoPage(++this.props.app.paginationInfo.currentPage);
-    };
+  handleIncrementRight = evt => {
+    evt.preventDefault();
+    this.gotoPage(++this.currentPage);
+  };
   render() {
     this.loadData(this.props);
     if (!this.totalRecords || this.totalPages === 1) return null;
 
-    const { currentPage } = this.props.app.paginationInfo;
     const pages = this.fetchPageNumbers();
 
     return (
@@ -157,40 +158,42 @@ export class Pagination extends Component {
                 );
               }
 
-                if (page === this.DECREMENT_PAGE) {
-                    return (
-                        <li key={index} className="page-item">
-                            <a
-                                className="page-link"
-                                href="#"
-                                aria-label="Previous"
-                                onClick={this.handleDecrementLeft}
-                            >
-                                <span aria-hidden="true">&lt;</span>
-                            </a>
-                        </li>
-                    );
-                }
+              if (page === this.DECREMENT_PAGE) {
+                return (
+                  <li key={index} className="page-item">
+                    <a
+                      className="page-link"
+                      href="#"
+                      aria-label="Previous"
+                      onClick={this.handleDecrementLeft}
+                    >
+                      <span aria-hidden="true">&lt;</span>
+                    </a>
+                  </li>
+                );
+              }
 
-                if (page === this.INCREMENT_PAGE) {
-                    return (
-                        <li key={index} className="page-item">
-                            <a
-                                className="page-link"
-                                href="#"
-                                aria-label="Previous"
-                                onClick={this.handleIncrementRight}
-                            >
-                                <span aria-hidden="true">&gt;</span>
-                            </a>
-                        </li>
-                    );
-                }
+              if (page === this.INCREMENT_PAGE) {
+                return (
+                  <li key={index} className="page-item">
+                    <a
+                      className="page-link"
+                      href="#"
+                      aria-label="Previous"
+                      onClick={this.handleIncrementRight}
+                    >
+                      <span aria-hidden="true">&gt;</span>
+                    </a>
+                  </li>
+                );
+              }
 
               return (
                 <li
                   key={index}
-                  className={`page-item ${currentPage === page ? "active" : ""}`}
+                  className={`page-item ${
+                    this.currentPage === page ? "active" : ""
+                  }`}
                 >
                   <a
                     className="page-link"
@@ -210,17 +213,11 @@ export class Pagination extends Component {
 }
 
 Pagination.propTypes = {
-    totalRecords: PropTypes.number,
-    pageLimit: PropTypes.number,
-    pageNeighbors: PropTypes.number,
-    onPageChanged: PropTypes.func
+  currentPage: PropTypes.number,
+  totalRecords: PropTypes.number,
+  pageLimit: PropTypes.number,
+  pageNeighbors: PropTypes.number,
+  onPageChanged: PropTypes.func
 };
 
-const mapStateToProps = state => {
-  return {
-    app: state.app,
-  };
-};
-
-export default connect(mapStateToProps, actions)(Pagination);
-//export default Pagination;
+export default Pagination;

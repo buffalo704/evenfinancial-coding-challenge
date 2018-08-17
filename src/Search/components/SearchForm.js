@@ -1,22 +1,9 @@
 import React from "react";
-import { Field, reduxForm } from "redux-form";
+import { Field } from "redux-form";
+import PropTypes from "prop-types";
 import LicenseType from "./LicenseType";
 import LicenseTypeData from '../../static/LicenseTypeData';
 import "../styles.css";
-
-const validate = values => {
-  const errors = {};
-
-  let regExp1 = new RegExp(/^(=|>|<|>=|<|<=|<>)\d+$/g);
-  let regExp2 = new RegExp(/^(\d+|\*)..(\d+|\*)$/g);
-
-  errors.stars =
-    values.stars && (!regExp1.test(values.stars) && !regExp2.test(values.stars))
-      ? "Stars syntax is invalid"
-      : undefined;
-
-  return errors;
-};
 
 const renderField = ({
   input,
@@ -94,4 +81,11 @@ export const SearchForm = ({
   );
 };
 
-export default reduxForm({ form: "search", validate })(SearchForm);
+SearchForm.propTypes = {
+    handleSubmit :PropTypes.func,
+    onSubmit: PropTypes.func,
+    invalid :PropTypes.boolean,
+    pristine:PropTypes.boolean,
+    submitting: PropTypes.boolean
+};
+export default SearchForm;

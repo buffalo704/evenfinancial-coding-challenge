@@ -9,6 +9,20 @@ import Pagination from "./components/Pagination";
 import SearchForm from "./components/SearchForm";
 import * as actions from "../actions";
 
+const validate = values => {
+  const errors = {};
+
+  let regExp1 = new RegExp(/^(>|<|>=|<|<=|<>)\d+$/g);
+  let regExp2 = new RegExp(/^(\d+|\*)..(\d+|\*)$/g);
+
+  errors.stars =
+    values.stars && (!regExp1.test(values.stars) && !regExp2.test(values.stars))
+      ? "Stars syntax is invalid"
+      : undefined;
+
+  return errors;
+};
+
 class Search extends Component {
   componentDidMount() {
     if (this.props.location.search) {
@@ -64,6 +78,9 @@ class Search extends Component {
     const propsTotalRecords = this.props.app.repository
       ? this.props.app.repository.total_count
       : 0;
+    const currentPage = this.props.app.paginationInfo
+      ? this.props.app.paginationInfo.currentPage
+      : 1;
     const totalRecords = Math.min(propsTotalRecords, 1000); // github returns only first 1000 search results;
     const formValues = this.props.formData;
     return (
@@ -83,6 +100,7 @@ class Search extends Component {
           <Message items={items} formValues={formValues} />
           <Results items={items} />
           <Pagination
+            currentPage={currentPage}
             totalRecords={totalRecords}
             pageLimit={30}
             pageNeighbors={2}
@@ -104,9 +122,6 @@ const mapStateToProps = state => {
 };
 
 export default compose(
-  connect(
-    mapStateToProps,
-    actions
-  ),
-  reduxForm({ form: "search" })
+  connect(mapStateToProps, actions),
+  reduxForm({ form: "search", validate })
 )(Search);
